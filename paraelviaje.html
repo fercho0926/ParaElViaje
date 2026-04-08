@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="paraeviaje — Tus sueños viajan con nosotros. Agencia de viajes Colombia.">
+<title>paraeviaje — Tus sueños viajan con nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DE MARCA
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --oliva:       #9B9B27;
+  --oliva-dark:  #7A7A1E;
+  --oliva-light: #C8C840;
+  --gris:        #58595B;
+  --gris-dark:   #333333;
+  --cream:       #FAFAF5;
+  --sand:        #F4F1E8;
+  --white:       #FFFFFF;
+  --ink:         #1E1E1E;
+  --muted:       #888880;
+  --border:      rgba(155,155,39,0.2);
+  --error:       #c0392b;
+  --success:     #27ae60;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+/* ============================================================
+   BARRA DE TABS
+============================================================ */
+.tabs-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: stretch;
+  background: var(--gris-dark);
+  height: 52px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  padding: 0 0.5rem;
+}
+.tab-btn:hover { color: var(--oliva-light); background: rgba(255,255,255,0.04); }
+.tab-btn.active { color: var(--oliva-light); border-bottom-color: var(--oliva-light); background: rgba(155,155,39,0.08); }
+.tab-btn .tab-icon { font-size: 1rem; }
+
+/* ============================================================
+   PÁGINAS (tabs)
+============================================================ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   NAV (dentro de la landing)
+============================================================ */
+nav {
+  position: sticky;
+  top: 52px;
+  left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  transition: background 0.4s, box-shadow 0.4s;
+  background: transparent;
+}
+nav.scrolled { background: rgba(255,255,255,0.97); box-shadow: 0 1px 24px rgba(0,0,0,0.08); }
+.nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; transition: color 0.2s; }
+nav.scrolled .nav-links a { color: var(--gris); }
+.nav-links a:hover { color: var(--oliva); }
+.nav-cta { background: var(--oliva) !important; color: var(--white) !important; padding: 0.55rem 1.4rem; border-radius: 30px; }
+.nav-cta:hover { background: var(--oliva-dark) !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+nav.scrolled .hamburger span { background: var(--gris-dark); }
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero { height: calc(100vh - 52px); min-height: 600px; position: relative; display: flex; align-items: center; overflow: hidden; }
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.4s ease; }
+.hero-slide.active { opacity: 1; }
+.hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(20,20,15,0.72) 0%, rgba(20,20,15,0.25) 60%, rgba(20,20,15,0.45) 100%); }
+.hero-content { position: relative; z-index: 2; padding: 0 4rem; max-width: 780px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(155,155,39,0.2); border: 1px solid rgba(155,155,39,0.5); padding: 0.4rem 1rem; border-radius: 30px; margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards; }
+.hero-badge span { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--oliva-light); }
+.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--oliva-light); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+.hero-title { font-family: 'Nunito', sans-serif; font-size: clamp(2.8rem, 6.5vw, 5.5rem); font-weight: 700; color: var(--white); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.4rem; opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards; }
+.hero-title .cursiva { font-family: 'Dancing Script', cursive; color: var(--oliva-light); font-size: 1.15em; }
+.hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.72); line-height: 1.8; max-width: 500px; margin-bottom: 2.5rem; font-weight: 300; opacity: 0; animation: fadeUp 0.8s ease 0.7s forwards; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease 0.9s forwards; }
+.btn-primary { background: var(--oliva); color: var(--white); padding: 0.9rem 2.2rem; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; border-radius: 30px; transition: transform 0.2s, background 0.2s, box-shadow 0.2s; display: inline-block; box-shadow: 0 4px 20px rgba(155,155,39,0.4); }
+.btn-primary:hover { background: var(--oliva-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,155,39,0.5); }
+.btn-outline { background: transparent; color: var(--white); padding: 0.9rem 2.2rem; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.55); cursor: pointer; border-radius: 30px; transition: border-color 0.2s, background 0.2s; display: inline-block; }
+.btn-outline:hover { border-color: var(--oliva-light); background: rgba(155,155,39,0.12); }
+.hero-scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards; }
+.hero-scroll-hint span { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(155,155,39,0.8), transparent); animation: scrollLine 2s infinite; }
+@keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+.hero-dots { position: absolute; bottom: 2.5rem; left: 4rem; z-index: 3; display: flex; gap: 0.5rem; }
+.dot { width: 24px; height: 3px; background: rgba(255,255,255,0.3); cursor: pointer; border-radius: 2px; transition: background 0.3s, width 0.3s; }
+.dot.active { background: var(--oliva-light); width: 44px; }
+.hero-counter { position: absolute; bottom: 2.5rem; right: 4rem; z-index: 3; font-family: 'DM Mono', monospace; font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+.slide-location { position: absolute; bottom: 5.5rem; right: 4rem; z-index: 3; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+
+/* STATS */
+.stats-strip { background: var(--gris-dark); padding: 2.2rem 4rem; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem; }
+.stat-item { text-align: center; }
+.stat-number { font-family: 'Dancing Script', cursive; font-size: 2.8rem; font-weight: 700; color: var(--oliva-light); display: block; line-height: 1; }
+.stat-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
+
+/* SECTION COMMONS */
+section { padding: 6rem 4rem; }
+.section-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--oliva); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+.section-tag::before { content: ''; width: 20px; height: 1px; background: var(--oliva); }
+.section-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.9rem, 3.8vw, 3rem); font-weight: 700; line-height: 1.15; color: var(--ink); margin-bottom: 1rem; }
+.section-title .cursiva { font-family: 'Dancing Script', cursive; color: var(--oliva); font-size: 1.15em; }
+.section-sub { font-size: 1rem; color: var(--muted); line-height: 1.8; max-width: 500px; font-weight: 300; }
+
+/* DESTINOS */
+.destinations { background: var(--cream); overflow: hidden; }
+.dest-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; }
+.dest-nav { display: flex; gap: 0.6rem; }
+.arr-btn { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--oliva); background: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; color: var(--oliva); }
+.arr-btn:hover { background: var(--oliva); color: var(--white); }
+.cards-track-wrap { overflow: hidden; }
+.cards-track { display: flex; gap: 1.2rem; transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); }
+.dest-card { flex: 0 0 calc(30% - 0.8rem); min-width: 260px; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: box-shadow 0.3s, transform 0.3s; }
+.dest-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,0.18); }
+.dest-card-img { height: 400px; background-size: cover; background-position: center; transition: transform 0.6s ease; position: relative; }
+.dest-card:hover .dest-card-img { transform: scale(1.06); }
+.dest-card-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,20,15,0.88) 0%, rgba(20,20,15,0.1) 55%, transparent 100%); }
+.dest-card-tag { position: absolute; top: 1rem; left: 1rem; z-index: 2; background: rgba(155,155,39,0.9); color: var(--white); font-size: 0.62rem; font-family: 'DM Mono', monospace; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 20px; }
+.dest-card-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.4rem; z-index: 1; }
+.dest-card-region { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(200,200,64,0.85); margin-bottom: 0.3rem; }
+.dest-card-name { font-family: 'Nunito', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 0.5rem; }
+.dest-card-meta { display: flex; justify-content: space-between; align-items: center; }
+.dest-card-price { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
+.dest-card-price strong { color: var(--white); font-size: 0.95rem; }
+.dest-card-btn { background: var(--oliva); color: var(--white); border: none; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: background 0.2s; text-decoration: none; font-family: 'Nunito', sans-serif; display: inline-block; }
+.dest-card-btn:hover { background: var(--oliva-dark); }
+
+/* MOSAICO */
+.mosaic-section { background: var(--sand); padding: 6rem 4rem; }
+.mosaic-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: 240px 240px; gap: 10px; border-radius: 16px; overflow: hidden; margin-top: 2.5rem; }
+.mosaic-cell { background-size: cover; background-position: center; position: relative; overflow: hidden; cursor: pointer; }
+.mosaic-cell::after { content: ''; position: absolute; inset: 0; background: rgba(20,20,15,0.25); transition: background 0.3s; }
+.mosaic-cell:hover::after { background: rgba(155,155,39,0.25); }
+.mosaic-cell.large { grid-column: span 2; grid-row: span 2; }
+.mosaic-cell.tall  { grid-row: span 2; }
+.mosaic-label { position: absolute; bottom: 0.8rem; left: 0.8rem; z-index: 2; color: var(--white); font-weight: 700; font-size: 0.85rem; text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
+.mosaic-label small { display: block; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--oliva-light); font-weight: 400; }
+
+/* FEATURE */
+.feature-section { background: var(--gris-dark); display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; min-height: 580px; }
+.feature-img { background-size: cover; background-position: center; min-height: 480px; position: relative; }
+.feature-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, rgba(51,51,51,0.5) 100%); }
+.feature-text { padding: 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+.feature-text .section-tag { color: var(--oliva-light); }
+.feature-text .section-tag::before { background: var(--oliva-light); }
+.feature-text .section-title { color: var(--white); }
+.feature-text .section-sub { color: rgba(255,255,255,0.55); max-width: 420px; }
+.feature-list { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: 1.2rem; }
+.feature-list li { display: flex; align-items: flex-start; gap: 1rem; color: rgba(255,255,255,0.72); font-size: 0.92rem; font-weight: 300; line-height: 1.5; }
+.feat-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(155,155,39,0.15); border: 1px solid rgba(155,155,39,0.4); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.feat-text strong { color: var(--white); font-weight: 700; display: block; }
+
+/* EXPERIENCIAS */
+.experiences { background: var(--cream); }
+.exp-header { text-align: center; max-width: 560px; margin: 0 auto 3.5rem; }
+.exp-header .section-tag { justify-content: center; }
+.exp-header .section-tag::before { display: none; }
+.exp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.exp-item { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 2rem 1.8rem; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; cursor: default; position: relative; overflow: hidden; }
+.exp-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--oliva); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+.exp-item:hover::before { transform: scaleX(1); }
+.exp-item:hover { border-color: var(--oliva); box-shadow: 0 8px 28px rgba(155,155,39,0.12); transform: translateY(-4px); }
+.exp-icon { font-size: 2rem; margin-bottom: 1rem; }
+.exp-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--ink); }
+.exp-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+/* GALERÍA */
+.gallery-section { background: var(--gris-dark); padding: 4rem 0; overflow: hidden; }
+.gallery-title { text-align: center; margin-bottom: 2rem; padding: 0 4rem; }
+.gallery-title .section-tag { justify-content: center; }
+.gallery-title .section-tag::before { display: none; }
+.gallery-title .section-title { color: var(--white); }
+.gallery-strip { display: flex; gap: 1rem; animation: scrollStrip 40s linear infinite; width: max-content; }
+.gallery-strip:hover { animation-play-state: paused; }
+@keyframes scrollStrip { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.gallery-img { width: 260px; height: 200px; flex-shrink: 0; background-size: cover; background-position: center; border-radius: 12px; opacity: 0.85; transition: opacity 0.3s, transform 0.3s; }
+.gallery-img:hover { opacity: 1; transform: scale(1.03); }
+
+/* TESTIMONIOS */
+.testimonials { background: var(--sand); }
+.test-header { text-align: center; max-width: 480px; margin: 0 auto 3rem; }
+.test-header .section-tag { justify-content: center; }
+.test-header .section-tag::before { display: none; }
+.test-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+.test-card { background: var(--white); border: 1px solid rgba(155,155,39,0.15); border-radius: 16px; padding: 2rem; position: relative; transition: box-shadow 0.3s; }
+.test-card:hover { box-shadow: 0 8px 28px rgba(155,155,39,0.1); }
+.test-quote { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--oliva); line-height: 0.8; margin-bottom: 1rem; opacity: 0.7; }
+.test-text { font-size: 0.9rem; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 1.5rem; font-style: italic; }
+.test-author { display: flex; align-items: center; gap: 0.8rem; }
+.test-avatar { width: 44px; height: 44px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0; border: 2px solid var(--oliva); }
+.test-name { font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+.test-trip { font-size: 0.7rem; color: var(--oliva); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+.test-stars { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--oliva); font-size: 0.7rem; letter-spacing: 2px; }
+
+/* TAGLINE */
+.tagline-section { background: var(--oliva); padding: 4rem; text-align: center; overflow: hidden; position: relative; }
+.tagline-section::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(255,255,255,0.05); top: -200px; right: -100px; }
+.tagline-big { font-family: 'Dancing Script', cursive; font-size: clamp(2.5rem,6vw,5rem); color: var(--white); font-weight: 700; position: relative; z-index: 1; }
+.tagline-big span { opacity: 0.6; font-size: 0.6em; font-family: 'Nunito', sans-serif; display: block; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; margin-bottom: 0.3rem; }
+
+/* CTA */
+.cta-section { background: var(--cream); text-align: center; padding: 7rem 4rem; position: relative; }
+.cta-section::before { content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%; background: rgba(155,155,39,0.06); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.cta-section .section-sub { margin: 0 auto 1rem; }
+.cta-form { display: flex; gap: 0.5rem; max-width: 480px; margin: 1.5rem auto 0; flex-wrap: wrap; position: relative; z-index: 1; }
+.cta-input { flex: 1; min-width: 220px; padding: 0.9rem 1.4rem; background: var(--white); border: 1.5px solid var(--border); border-radius: 30px; color: var(--ink); font-family: 'Nunito', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+.cta-input::placeholder { color: var(--muted); }
+.cta-input:focus { border-color: var(--oliva); }
+.cta-btn { background: var(--oliva); color: var(--white); border: none; padding: 0.9rem 2rem; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 30px; transition: background 0.2s, transform 0.2s; white-space: nowrap; box-shadow: 0 4px 16px rgba(155,155,39,0.35); }
+.cta-btn:hover { background: var(--oliva-dark); transform: translateY(-1px); }
+
+/* FOOTER */
+footer { background: var(--gris-dark); padding: 3rem 4rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+.footer-tagline { font-size: 0.78rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; font-family: 'DM Mono', monospace; letter-spacing: 0.08em; }
+.footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+.footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.35); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.2s; }
+.footer-links a:hover { color: var(--oliva-light); }
+
+/* MOBILE MENU */
+.mobile-menu { display: none; position: fixed; inset: 0; background: var(--gris-dark); z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-family: 'Dancing Script', cursive; font-size: 2.4rem; font-weight: 700; color: var(--white); text-decoration: none; transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--oliva-light); }
+.mobile-close { position: absolute; top: calc(52px + 1rem); right: 1.5rem; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+
+/* REVEAL */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* NOTIF */
+.notif { position: fixed; bottom: 2rem; right: 2rem; background: var(--gris-dark); color: var(--white); padding: 1rem 1.5rem; font-size: 0.85rem; border-left: 3px solid var(--oliva); z-index: 9999; border-radius: 8px; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275); max-width: 300px; }
+.notif.show { transform: translateX(0); }
+
+/* ============================================================
+   SORTEO — estilos con marca paraeviaje
+============================================================ */
+.sorteo-page {
+  min-height: 100vh;
+  background: var(--cream);
+  padding-top: 0;
+}
+
+/* Hero sorteo */
+.sorteo-hero {
+  background:
+    linear-gradient(135deg, rgba(26,22,16,0.9) 0%, rgba(155,155,39,0.55) 100%),
+    url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1400&q=80') center/cover;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.sorteo-hero::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  border: 2px solid rgba(200,200,64,0.12);
+  top: -150px; right: -150px;
+}
+.sorteo-hero::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  border: 2px solid rgba(200,200,64,0.08);
+  bottom: -100px; left: -80px;
+}
+.sorteo-hero-content { position: relative; z-index: 2; max-width: 600px; }
+
+.sorteo-logo-icon {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 1.2rem;
+  animation: flotar 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4));
+}
+@keyframes flotar {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-14px) rotate(3deg); }
+}
+
+.sorteo-hero h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.02em;
+}
+.sorteo-hero h1 .cursiva {
+  font-family: 'Dancing Script', cursive;
+  color: var(--oliva-light);
+  font-size: 1.15em;
+}
+.sorteo-hero-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--oliva-light);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.sorteo-hero-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+.sorteo-btn-hero {
+  display: inline-block;
+  background: var(--oliva);
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1rem 2.4rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(155,155,39,0.45);
+}
+.sorteo-btn-hero:hover { background: var(--oliva-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,155,39,0.55); }
+
+/* Contenedor del formulario sorteo */
+.sorteo-body {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.form-card {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  padding: 2.5rem 2rem;
+  margin-top: -2.5rem;
+  position: relative;
+  border: 1px solid var(--border);
+}
+
+.form-header { text-align: center; margin-bottom: 2rem; }
+.form-icon { font-size: 2.8rem; display: block; margin-bottom: 0.8rem; }
+.form-header h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+.form-header p { font-size: 0.88rem; color: var(--muted); }
+
+.form-group { margin-bottom: 1.2rem; }
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gris-dark);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+}
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border: 1.5px solid rgba(155,155,39,0.25);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  -webkit-appearance: none;
+}
+.form-group input:focus {
+  border-color: var(--oliva);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(155,155,39,0.15);
+}
+.form-group input.input-error { border-color: var(--error); background: #fff5f5; }
+.form-group input.input-valid { border-color: var(--success); background: #f6fff8; }
+
+.error-msg {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--error);
+  margin-top: 0.4rem;
+  min-height: 16px;
+  padding-left: 4px;
+  font-family: 'DM Mono', monospace;
+}
+.required { color: var(--error); }
+
+/* Nota de condición */
+.prize-condition-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  background: linear-gradient(135deg, #f9f7e8, #f4f1d8);
+  border: 1.5px solid rgba(155,155,39,0.35);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0 1.2rem;
+}
+.note-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.prize-condition-note p { font-size: 0.82rem; color: #5a4e10; line-height: 1.6; }
+.prize-condition-note strong { color: var(--oliva-dark); }
+
+/* Botón submit */
+.btn-submit {
+  width: 100%;
+  background: var(--oliva);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 1.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 20px rgba(155,155,39,0.38);
+}
+.btn-submit:hover { background: var(--oliva-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,155,39,0.5); }
+.btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+.btn-icon { font-size: 1.2rem; }
+
+.legal-note {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(155,155,39,0.15);
+}
+.legal-note p { font-size: 0.7rem; color: var(--muted); line-height: 1.7; margin-bottom: 3px; font-family: 'DM Mono', monospace; }
+
+/* Sección premio */
+.prize-section { padding: 2rem 0 4rem; min-height: 60vh; display: flex; align-items: center; }
+.prize-section.hidden { display: none !important; }
+
+.prize-card {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  animation: entradaSlide 0.65s ease both;
+}
+@keyframes entradaSlide { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:translateY(0)} }
+
+.prize-trophy { font-size: 68px; display: block; margin-bottom: 1rem; animation: reboteTrofeo 0.7s ease 0.2s both; }
+@keyframes reboteTrofeo { 0%{transform:scale(0);opacity:0} 55%{transform:scale(1.25)} 78%{transform:scale(0.88)} 100%{transform:scale(1);opacity:1} }
+
+.prize-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  font-weight: 700;
+  color: var(--oliva);
+  margin-bottom: 0.5rem;
+}
+.prize-winner-name { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
+.prize-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.3rem; }
+
+.prize-box {
+  background: var(--gris-dark);
+  border-radius: 16px;
+  padding: 1.8rem 1.5rem;
+  margin: 1.5rem 0 1.2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+}
+.prize-box::before { content: '✈️'; position: absolute; font-size: 120px; opacity: 0.06; right: -20px; bottom: -24px; transform: rotate(-18deg); pointer-events: none; }
+.prize-number { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--oliva-light); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+.prize-description { font-size: 0.9rem; color: rgba(255,255,255,0.88); font-weight: 600; line-height: 1.65; }
+
+.prize-footer-note { background: var(--sand); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+.prize-footer-note p { font-size: 0.76rem; color: var(--muted); line-height: 1.65; font-family: 'DM Mono', monospace; }
+
+.btn-reclamar {
+  width: 100%;
+  background: linear-gradient(135deg, #25d366, #128c4f);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 1.1rem 1.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 5px 20px rgba(37,211,102,0.45);
+  margin-bottom: 1rem;
+  animation: pulsoVerde 2s ease-in-out infinite;
+}
+@keyframes pulsoVerde { 0%,100%{box-shadow:0 5px 20px rgba(37,211,102,0.45)} 50%{box-shadow:0 5px 32px rgba(37,211,102,0.72)} }
+.btn-reclamar:hover { background: linear-gradient(135deg,#20c05c,#0e7a42); animation: none; transform: translateY(-2px); }
+
+.prize-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+.btn-share, .btn-new {
+  flex: 1;
+  min-width: 130px;
+  max-width: 200px;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 30px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-share { background: var(--oliva); color: var(--white); box-shadow: 0 3px 12px rgba(155,155,39,0.35); }
+.btn-share:hover { background: var(--oliva-dark); transform: translateY(-2px); }
+.btn-new { background: var(--white); color: var(--ink); border: 1.5px solid var(--border); }
+.btn-new:hover { background: var(--sand); transform: translateY(-2px); }
+
+/* Confetti */
+.prize-confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+.confetti-piece { position: absolute; border-radius: 2px; animation: lluviConfetti linear forwards; }
+@keyframes lluviConfetti { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(500px) rotate(720deg);opacity:0} }
+
+/* ADMIN PANEL */
+.admin-section { padding: 1.5rem 0 4rem; }
+.admin-section.hidden { display: none !important; }
+.admin-card { background: var(--white); border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid var(--border); }
+.admin-header { background: var(--gris-dark); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; }
+.admin-header h3 { color: var(--white); font-size: 0.95rem; font-weight: 700; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; }
+.admin-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn-export, .btn-clear, .btn-close-admin { padding: 0.4rem 0.9rem; border: none; border-radius: 20px; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; }
+.btn-export { background: var(--oliva); color: var(--white); }
+.btn-export:hover { background: var(--oliva-dark); }
+.btn-clear { background: var(--error); color: var(--white); }
+.btn-clear:hover { background: #a93226; }
+.btn-close-admin { background: rgba(255,255,255,0.15); color: var(--white); }
+.btn-close-admin:hover { background: rgba(255,255,255,0.28); }
+.admin-stats { display: flex; border-bottom: 1px solid var(--border); }
+.stat-box { flex: 1; text-align: center; padding: 1rem 0.5rem; border-right: 1px solid var(--border); }
+.stat-box:last-child { border-right: none; }
+.admin-stat-number { display: block; font-family: 'Dancing Script', cursive; font-size: 1.8rem; font-weight: 700; color: var(--oliva); line-height: 1.1; }
+.admin-stat-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.admin-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; min-width: 520px; }
+.admin-table th { background: var(--sand); padding: 0.8rem 1rem; text-align: left; font-weight: 700; color: var(--gris-dark); border-bottom: 2px solid var(--border); white-space: nowrap; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; }
+.admin-table td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+.admin-table tr:hover td { background: #f5f8f0; }
+.no-records { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.88rem; font-family: 'DM Mono', monospace; }
+
+/* Botón flotante admin */
+.btn-admin-float {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1rem;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--oliva-dark);
+  color: var(--white);
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  z-index: 999;
+  transition: all 0.2s;
+  opacity: 0.75;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.btn-admin-float.visible { display: flex; }
+.btn-admin-float:hover { opacity: 1; transform: scale(1.1) rotate(20deg); }
+
+/* Footer sorteo */
+.sorteo-footer {
+  background: var(--gris-dark);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+.sorteo-footer p { font-size: 0.72rem; line-height: 1.7; font-family: 'DM Mono', monospace; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-90px);
+  background: var(--gris-dark);
+  color: var(--white);
+  padding: 0.9rem 1.8rem;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  z-index: 9999;
+  transition: transform 0.4s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  max-width: 90vw;
+  text-align: center;
+  pointer-events: none;
+  border-left: 3px solid var(--oliva);
+  font-family: 'Nunito', sans-serif;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.toast-error   { border-left-color: var(--error);   }
+.toast.toast-success { border-left-color: var(--success); }
+.toast.toast-warn    { border-left-color: #e67e00; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1024px) {
+  .exp-grid { grid-template-columns: repeat(2,1fr); }
+  .mosaic-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: auto; }
+  .mosaic-cell.large { grid-column: span 2; height: 280px; }
+  .mosaic-cell.tall  { grid-row: span 1; height: 200px; }
+  .mosaic-cell       { height: 200px; }
+}
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-content { padding: 0 1.5rem; }
+  .hero-dots { left: 1.5rem; }
+  .hero-counter { right: 1.5rem; }
+  .slide-location { display: none; }
+  section { padding: 4rem 1.5rem; }
+  .stats-strip { padding: 2rem 1.5rem; }
+  .dest-card { flex: 0 0 78vw; }
+  .feature-section { grid-template-columns: 1fr; }
+  .feature-img { min-height: 280px; }
+  .feature-text { padding: 3rem 1.5rem; }
+  .exp-grid { grid-template-columns: 1fr; }
+  .test-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; }
+  .footer-links { gap: 1rem; }
+  .cta-form { flex-direction: column; }
+  .cta-input { min-width: unset; }
+  .mosaic-section { padding: 4rem 1.5rem; }
+  .gallery-title { padding: 0 1.5rem; }
+  .tagline-section { padding: 3rem 1.5rem; }
+  .tab-btn .tab-label { display: none; }
+  .tab-btn { font-size: 0; }
+  .tab-btn .tab-icon { font-size: 1.3rem; }
+  .prize-actions { flex-direction: column; align-items: center; }
+  .btn-share, .btn-new { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .dest-card { flex: 0 0 88vw; }
+  .mosaic-grid { grid-template-columns: 1fr; }
+  .mosaic-cell.large, .mosaic-cell.tall, .mosaic-cell { grid-column: span 1; grid-row: span 1; height: 200px; }
+  .form-card { padding: 1.8rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BARRA DE TABS
+============================================================ -->
+<div class="tabs-bar" role="tablist">
+  <button class="tab-btn active" id="tab-landing" onclick="switchTab('landing')" role="tab" aria-selected="true">
+    <span class="tab-icon">✈️</span>
+    <span class="tab-label">paraeviaje</span>
+  </button>
+  <button class="tab-btn" id="tab-sorteo" onclick="switchTab('sorteo')" role="tab" aria-selected="false">
+    <span class="tab-icon">🎁</span>
+    <span class="tab-label">Sorteo 2026</span>
+  </button>
+</div>
+
+<!-- ============================================================
+     MOBILE MENU (landing)
+============================================================ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#destinos" class="mobile-link">Destinos</a>
+  <a href="#experiencias" class="mobile-link">Experiencias</a>
+  <a href="#galeria" class="mobile-link">Galería</a>
+  <a href="#nosotros" class="mobile-link">Nosotros</a>
+  <a href="#cta" class="mobile-link" style="color:var(--oliva-light)">Cotizar</a>
+</div>
+
+<!-- ============================================================
+     TAB 1: LANDING PAGE
+============================================================ -->
+<div class="page active" id="page-landing">
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" style="text-decoration:none;display:flex;align-items:center;">
+      <svg width="170" height="46" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="#58595B">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)">
+          <polygon points="0,-5 13,0 0,5" fill="#9B9B27"/>
+          <polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/>
+        </g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="#58595B">viaje</text>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#destinos">Destinos</a></li>
+      <li><a href="#experiencias">Experiencias</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#cta" class="nav-cta">Cotizar viaje</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-slides">
+      <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800&q=85')"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><div class="hero-badge-dot"></div><span>Tus sueños viajan con nosotros</span></div>
+      <h1 class="hero-title">El mundo es<br><span class="cursiva">demasiado grande</span><br>para quedarse quieto.</h1>
+      <p class="hero-sub">Desde el corazón de Colombia hasta los rincones más remotos del planeta. Creamos viajes que transforman.</p>
+      <div class="hero-actions">
+        <a href="#destinos" class="btn-primary">Ver destinos</a>
+        <a href="#cta" class="btn-outline">Cotizar ahora</a>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot" data-i="3"></div>
+      <div class="dot" data-i="4"></div>
+    </div>
+    <div class="hero-counter" id="heroCounter">01 / 05</div>
+    <div class="slide-location" id="slideLocation">📍 En algún lugar del mundo</div>
+    <div class="hero-scroll-hint"><span>Descubrir</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-strip reveal">
+    <div class="stat-item"><span class="stat-number" data-target="85">0</span><span class="stat-label">Países visitados</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="5000">0</span><span class="stat-label">Viajeros felices</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="98">0</span><span class="stat-label">% satisfacción</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="8">0</span><span class="stat-label">Años de experiencia</span></div>
+  </div>
+
+  <!-- DESTINOS -->
+  <section class="destinations" id="destinos">
+    <div class="dest-header reveal">
+      <div>
+        <p class="section-tag">Destinos populares</p>
+        <h2 class="section-title">¿A dónde quieres<br><span class="cursiva">escapar?</span></h2>
+        <p class="section-sub">Exploramos el planeta para traerte los destinos que cambiarán tu vida.</p>
+      </div>
+      <div class="dest-nav"><button class="arr-btn" id="prevBtn">←</button><button class="arr-btn" id="nextBtn">→</button></div>
+    </div>
+    <div class="cards-track-wrap">
+      <div class="cards-track" id="cardsTrack">
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=700&q=85')"><span class="dest-card-tag">🔥 Más popular</span></div><div class="dest-card-body"><p class="dest-card-region">Asia · Japón</p><h3 class="dest-card-name">Tokio y Kioto</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,200 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=700&q=85')"><span class="dest-card-tag">🌴 Paraíso</span></div><div class="dest-card-body"><p class="dest-card-region">Asia · Maldivas</p><h3 class="dest-card-name">Maldivas<br>Tropical</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$4,100 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Italia</p><h3 class="dest-card-name">Costa<br>Amalfitana</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,450 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1583001809873-a128495da465?w=700&q=85')"><span class="dest-card-tag">🌿 Eco</span></div><div class="dest-card-body"><p class="dest-card-region">Sudamérica · Colombia</p><h3 class="dest-card-name">Cartagena<br>de Indias</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$890 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1526392060635-9d6019884377?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">África · Marruecos</p><h3 class="dest-card-name">Desierto<br>del Sahara</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,100 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Suiza</p><h3 class="dest-card-name">Alpes<br>Nevados</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,800 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=700&q=85')"><span class="dest-card-tag">⭐ Favorito</span></div><div class="dest-card-body"><p class="dest-card-region">Oceanía · Bali</p><h3 class="dest-card-name">Bali<br>Espiritual</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,350 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Grecia</p><h3 class="dest-card-name">Santorini<br>Azul</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,900 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1500835556837-99ac94a94552?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Norteamérica · EE.UU.</p><h3 class="dest-card-name">Gran<br>Cañón</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,200 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Sudamérica · Brasil</p><h3 class="dest-card-name">Río de<br>Janeiro</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$1,650 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOSAICO -->
+  <section class="mosaic-section reveal" id="galeria">
+    <p class="section-tag">Galería de sueños</p>
+    <h2 class="section-title">Un mundo por <span class="cursiva">descubrir.</span></h2>
+    <div class="mosaic-grid">
+      <div class="mosaic-cell large" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=85')"><div class="mosaic-label">Europa del Norte<small>Noruega · Fiordos</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=85')"><div class="mosaic-label">Taj Mahal<small>India · Asia</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&q=85')"><div class="mosaic-label">Playa Tropical<small>Tailandia</small></div></div>
+      <div class="mosaic-cell tall" style="background-image:url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=85')"><div class="mosaic-label">Coliseo Romano<small>Italia · Roma</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=85')"><div class="mosaic-label">Selva Amazónica<small>Sudamérica</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&q=85')"><div class="mosaic-label">Dubai<small>Emiratos Árabes</small></div></div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <div class="feature-section" id="nosotros">
+    <div class="feature-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=900&q=85')"></div>
+    <div class="feature-text reveal">
+      <p class="section-tag">Por qué elegirnos</p>
+      <h2 class="section-title">Viajes que se<br>sienten <span class="cursiva">de verdad.</span></h2>
+      <p class="section-sub">No vendemos paquetes genéricos. Construimos cada viaje a la medida de tus sueños.</p>
+      <ul class="feature-list">
+        <li><div class="feat-icon">✈️</div><div class="feat-text"><strong>Itinerarios 100% personalizados</strong>Cada viaje es único, diseñado para tu ritmo, gustos y presupuesto.</div></li>
+        <li><div class="feat-icon">🗺️</div><div class="feat-text"><strong>Guías locales expertos</strong>Personas que conocen cada rincón de su tierra con historias únicas.</div></li>
+        <li><div class="feat-icon">📞</div><div class="feat-text"><strong>Soporte 24/7 en viaje</strong>Estamos contigo en cualquier momento, en cualquier huso horario.</div></li>
+        <li><div class="feat-icon">🌿</div><div class="feat-text"><strong>Turismo responsable</strong>Viajamos con respeto por las comunidades y el medio ambiente.</div></li>
+      </ul>
+      <a href="#cta" class="btn-primary" style="display:inline-block;margin-top:0.5rem;text-decoration:none;">Quiero mi viaje</a>
+    </div>
+  </div>
+
+  <!-- EXPERIENCIAS -->
+  <section class="experiences" id="experiencias">
+    <div class="exp-header reveal">
+      <p class="section-tag">Lo que ofrecemos</p>
+      <h2 class="section-title">Experiencias para<br>cada <span class="cursiva">espíritu viajero.</span></h2>
+    </div>
+    <div class="exp-grid reveal">
+      <div class="exp-item"><div class="exp-icon">🏔</div><h3 class="exp-title">Aventura extrema</h3><p class="exp-desc">Trekkings, escaladas y expediciones donde cada paso es un logro que nadie puede quitarte.</p></div>
+      <div class="exp-item"><div class="exp-icon">🏛</div><h3 class="exp-title">Cultura e historia</h3><p class="exp-desc">Museos, festivales y rituales ancestrales que amplían tu forma de ver el mundo.</p></div>
+      <div class="exp-item"><div class="exp-icon">🌊</div><h3 class="exp-title">Playa y paraíso</h3><p class="exp-desc">Playas vírgenes, arrecifes de coral y pueblos de pescadores que el tiempo no ha tocado.</p></div>
+      <div class="exp-item"><div class="exp-icon">🍜</div><h3 class="exp-title">Turismo gastronómico</h3><p class="exp-desc">Mercados locales, clases de cocina y sabores que narran la historia entera de un pueblo.</p></div>
+      <div class="exp-item"><div class="exp-icon">🧘</div><h3 class="exp-title">Bienestar y retiro</h3><p class="exp-desc">Desconéctate del ruido. Retiros de meditación en entornos naturales que sanan el alma.</p></div>
+      <div class="exp-item"><div class="exp-icon">💍</div><h3 class="exp-title">Lunas de miel</h3><p class="exp-desc">El viaje más especial de tu vida, diseñado con cada detalle para que sea perfecto.</p></div>
+    </div>
+  </section>
+
+  <!-- GALERÍA ANIMADA -->
+  <div class="gallery-section">
+    <div class="gallery-title reveal">
+      <p class="section-tag" style="justify-content:center;">El mundo en imágenes</p>
+      <h2 class="section-title">Lugares que te <span class="cursiva">llaman.</span></h2>
+    </div>
+    <div class="gallery-strip">
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1535530992830-e25d07cfa780?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1535530992830-e25d07cfa780?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80')"></div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonials">
+    <div class="test-header reveal">
+      <p class="section-tag">Voces reales</p>
+      <h2 class="section-title">Lo que dicen<br><span class="cursiva">nuestros viajeros.</span></h2>
+    </div>
+    <div class="test-grid reveal">
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">Nunca pensé que un viaje pudiera cambiarme tanto. Bali fue una experiencia que llevo tatuada en el corazón. Gracias, paraeviaje.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80')"></div><div><div class="test-name">Valentina Ríos</div><div class="test-trip">→ Bali, Indonesia</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">El Sahara de noche, bajo un millón de estrellas. No hay palabras para describirlo. Solo sé que volvería mañana mismo si pudiera.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80')"></div><div><div class="test-name">Mateo Guzmán</div><div class="test-trip">→ Sahara, Marruecos</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">Japón era mi sueño desde niña. Paraeviaje lo hizo realidad con cada detalle pensado. Un viaje perfecto, de principio a fin.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80')"></div><div><div class="test-name">Lucía Moreno</div><div class="test-trip">→ Kioto, Japón</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- TAGLINE -->
+  <div class="tagline-section reveal">
+    <p class="tagline-big"><span>Tus sueños viajan con nosotros</span>paraeviaje</p>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <p class="section-tag" style="justify-content:center;color:var(--oliva);">¡Empieza hoy!</p>
+    <h2 class="section-title" style="margin-bottom:0.8rem;">¿Cuándo vas a dar<br><span class="cursiva">el paso?</span></h2>
+    <p class="section-sub" style="margin:0 auto;">Déjanos tu correo y un asesor te contactará para diseñar la aventura perfecta.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="tu@correo.com" id="emailInput">
+      <button class="cta-btn" id="ctaBtn">¡Quiero viajar!</button>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:1rem;font-family:'DM Mono',monospace;">Sin spam. Solo inspiración para viajeros.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <svg width="140" height="40" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.55)">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)"><polygon points="0,-5 13,0 0,5" fill="#9B9B27"/><polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/></g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.55)">viaje</text>
+      </svg>
+      <p class="footer-tagline">Tus sueños viajan con nosotros · @paraviajetravel</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#destinos">Destinos</a></li>
+      <li><a href="#experiencias">Experiencias</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#cta">Cotizar</a></li>
+      <li><a href="https://www.instagram.com/paraviajetravel" target="_blank" style="color:var(--oliva-light)!important;">Instagram ↗</a></li>
+    </ul>
+  </footer>
+
+</div><!-- /page-landing -->
+
+
+<!-- ============================================================
+     TAB 2: SORTEO 2026
+============================================================ -->
+<div class="page" id="page-sorteo">
+  <div class="sorteo-page">
+
+    <!-- HERO SORTEO -->
+    <div class="sorteo-hero">
+      <div class="sorteo-hero-content">
+        <span class="sorteo-logo-icon">✈️</span>
+        <h1>¡Viaja y<br><span class="cursiva">Gana!</span></h1>
+        <span class="sorteo-hero-sub">Gran Sorteo de Premios · 2026</span>
+        <p class="sorteo-hero-desc">Escaneaste nuestro código QR y ya eres parte de esta experiencia.<br>Completa tus datos y descubre el premio que el mundo tiene reservado para ti.</p>
+        <a href="#formulario-sorteo" class="sorteo-btn-hero">Participar Ahora 🎁</a>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="sorteo-body">
+      <section id="formulario-sorteo">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="form-icon">🌍</span>
+            <h2>Registro de Participante</h2>
+            <p>Completa tus datos para descubrir tu premio</p>
+          </div>
+          <form id="registroForm" novalidate autocomplete="on">
+            <div class="form-group">
+              <label for="nombre">Nombre Completo <span class="required">*</span></label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: María González Pérez" autocomplete="name" required>
+              <span class="error-msg" id="error-nombre" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="cedula">Número de Cédula <span class="required">*</span></label>
+              <input type="text" id="cedula" name="cedula" placeholder="Ej: 1023456789" inputmode="numeric" autocomplete="off" required>
+              <span class="error-msg" id="error-cedula" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono / Celular <span class="required">*</span></label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Ej: 3001234567" inputmode="tel" autocomplete="tel" required>
+              <span class="error-msg" id="error-telefono" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="Ej: maria@correo.com" autocomplete="email" required>
+              <span class="error-msg" id="error-email" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="prize-condition-note" role="note">
+              <span class="note-icon">⭐</span>
+              <p>Los premios aplican únicamente para compras iguales o superiores a <strong>$25.000</strong></p>
+            </div>
+            <button type="submit" class="btn-submit" id="btnSubmit">
+              <span class="btn-text">¡Descubrir mi Premio!</span>
+              <span class="btn-icon">🎁</span>
+            </button>
+          </form>
+          <div class="legal-note" role="contentinfo">
+            <p>* Los premios aplican únicamente para compras iguales o superiores a $25.000.</p>
+            <p>* Los descuentos aplican antes de impuestos. Para temporada media y alta validar descuentos y beneficios. Válido para 2026 y 2027.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN PREMIO -->
+      <section id="premio-section" class="prize-section hidden" aria-live="polite">
+        <div class="prize-card">
+          <div class="prize-confetti" id="confetti-container" aria-hidden="true"></div>
+          <div class="prize-header">
+            <div class="prize-trophy">🏆</div>
+            <h2 class="prize-title">¡Felicitaciones!</h2>
+            <p class="prize-winner-name" id="ganador-nombre"></p>
+            <p class="prize-subtitle">Has ganado el siguiente premio:</p>
+          </div>
+          <div class="prize-box">
+            <div class="prize-number" id="premio-titulo"></div>
+            <div class="prize-description" id="premio-texto"></div>
+          </div>
+          <div class="prize-footer-note">
+            <p>⭐ Aplica para compras ≥ $25.000 · Válido 2026–2027</p>
+            <p>Un asesor de viajes se comunicará contigo para hacer efectivo tu premio.</p>
+          </div>
+          <button class="btn-reclamar" onclick="reclamarPremio()">
+            <span>📲 Reclamar Premio por WhatsApp</span>
+          </button>
+          <div class="prize-actions">
+            <button class="btn-share" onclick="compartirPremio()">📤 Compartir</button>
+            <button class="btn-new" onclick="reiniciarPagina()">🔄 Nueva Consulta</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL ADMIN -->
+      <section id="admin-section" class="admin-section hidden">
+        <div class="admin-card">
+          <div class="admin-header">
+            <h3>Panel de Registros</h3>
+            <div class="admin-actions">
+              <button class="btn-export" onclick="exportarJSON()">⬇️ Exportar JSON</button>
+              <button class="btn-clear" onclick="limpiarRegistros()">🗑️ Limpiar Todo</button>
+              <button class="btn-close-admin" onclick="toggleAdmin()">✕ Cerrar</button>
+            </div>
+          </div>
+          <div class="admin-stats" id="admin-stats"></div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table" id="admin-tabla">
+              <thead>
+                <tr><th>#</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Premio</th><th>Fecha</th></tr>
+              </thead>
+              <tbody id="admin-tbody"></tbody>
+            </table>
+            <p class="no-records hidden" id="no-records">No hay registros aún.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /sorteo-body -->
+
+    <!-- FOOTER SORTEO -->
+    <div class="sorteo-footer">
+      <svg width="110" height="30" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.5rem;">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)"><polygon points="0,-5 13,0 0,5" fill="#9B9B27"/><polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/></g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">viaje</text>
+      </svg>
+      <p>© 2026 paraeviaje · Todos los derechos reservados</p>
+      <p>Los premios aplican para compras ≥ $25.000 · Descuentos antes de impuestos · Válido 2026–2027</p>
+    </div>
+
+  </div><!-- /sorteo-page -->
+</div><!-- /page-sorteo -->
+
+<!-- Botón admin flotante (solo visible en tab sorteo) -->
+<button class="btn-admin-float" id="btnAdminFloat" onclick="toggleAdmin()" title="Panel Admin" aria-label="Abrir panel de administración">⚙️</button>
+
+<!-- Toast -->
+<div class="notif" id="notif">✓ ¡Genial! Te escribiremos muy pronto. Prepárate para viajar 🌍</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   TABS
+============================================================ */
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  document.getElementById('page-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).setAttribute('aria-selected','true');
+  // Botón admin solo visible en sorteo
+  const floatBtn = document.getElementById('btnAdminFloat');
+  floatBtn.classList.toggle('visible', tab === 'sorteo');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   LANDING: NAV SCROLL
+============================================================ */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (document.getElementById('page-landing').classList.contains('active')) {
+    navbar.classList.toggle('scrolled', window.scrollY > 70);
+  }
+});
+
+// HAMBURGER
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+document.getElementById('mobileClose').addEventListener('click', () => mobileMenu.classList.remove('open'));
+hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+// HERO SLIDER
+const slides = document.querySelectorAll('.hero-slide');
+const dots   = document.querySelectorAll('.dot');
+const counter = document.getElementById('heroCounter');
+const locations = ['📍 En algún lugar del mundo','📍 Noruega, Europa del Norte','📍 Kioto, Japón','📍 Bali, Indonesia','📍 Patagonia, Sudamérica'];
+let current = 0;
+function goTo(i) {
+  slides[current].classList.remove('active'); dots[current].classList.remove('active');
+  current = (i + slides.length) % slides.length;
+  slides[current].classList.add('active'); dots[current].classList.add('active');
+  counter.textContent = String(current+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  document.getElementById('slideLocation').textContent = locations[current];
+}
+dots.forEach(d => d.addEventListener('click', () => { clearInterval(si); goTo(parseInt(d.dataset.i)); si = setInterval(() => goTo(current+1), 5500); }));
+let si = setInterval(() => goTo(current+1), 5500);
+
+// CARRUSEL DESTINOS
+const track = document.getElementById('cardsTrack');
+const dCards = track.querySelectorAll('.dest-card');
+let tPos = 0;
+function cardW() { return dCards[0] ? dCards[0].offsetWidth + 12 : 0; }
+function maxOff() { return Math.max(0, dCards.length * cardW() - track.parentElement.offsetWidth); }
+document.getElementById('nextBtn').addEventListener('click', () => { tPos = Math.min(tPos+cardW(), maxOff()); track.style.transform=`translateX(-${tPos}px)`; });
+document.getElementById('prevBtn').addEventListener('click', () => { tPos = Math.max(tPos-cardW(), 0); track.style.transform=`translateX(-${tPos}px)`; });
+let sX = 0;
+track.addEventListener('touchstart', e => { sX = e.touches[0].clientX; }, {passive:true});
+track.addEventListener('touchend', e => { const d=sX-e.changedTouches[0].clientX; if(Math.abs(d)>50){tPos=d>0?Math.min(tPos+cardW(),maxOff()):Math.max(tPos-cardW(),0);track.style.transform=`translateX(-${tPos}px)`;} }, {passive:true});
+
+// REVEAL
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+}, {threshold:0.08});
+reveals.forEach(r => io.observe(r));
+
+// COUNTERS
+function animateCounter(el, target) {
+  const steps = 1800/16, inc = target/steps; let val=0;
+  const t=setInterval(()=>{ val=Math.min(val+inc,target); el.textContent=Math.floor(val).toLocaleString('es')+(el.dataset.target=='98'?'%':'+'); if(val>=target)clearInterval(t); },16);
+}
+const sio = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target,parseInt(e.target.dataset.target));sio.unobserve(e.target);}});},{threshold:0.5});
+document.querySelectorAll('.stat-number[data-target]').forEach(n=>sio.observe(n));
+
+// CTA EMAIL
+document.getElementById('ctaBtn').addEventListener('click', () => {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email || !email.includes('@')) { document.getElementById('emailInput').style.borderColor='#c44'; setTimeout(()=>document.getElementById('emailInput').style.borderColor='',1500); return; }
+  const notif = document.getElementById('notif'); notif.classList.add('show');
+  document.getElementById('emailInput').value='';
+  setTimeout(()=>notif.classList.remove('show'),4500);
+});
+
+/* ============================================================
+   SORTEO: lógica completa (app.js integrado y re-skinneado)
+============================================================ */
+
+const PREMIOS = [
+  { id:1, titulo:'Premio #1 · Descuento 10% Viajes Nacionales y Caribe', descripcion:'BONO DESCUENTO DE 10% EN SALIDAS PUNTUALES EN TEMPORADA BAJA PARA VIAJES NACIONALES Y POR EL CARIBE (PUNTA CANA, CANCÚN, ARUBA Y CURAZAO). APLICA DE 1 A 4 PERSONAS EN LA MISMA RESERVA.' },
+  { id:2, titulo:'Premio #2 · Tour de Cortesía Punta Cana y Cancún', descripcion:'TOUR DE CORTESÍA EN PUNTA CANA Y CANCÚN PARA 4 PERSONAS EN LA MISMA RESERVA. APLICA SÓLO PARA RESERVAS DEL PLAN COMPLETO.' },
+  { id:3, titulo:'Premio #3 · Descuento hasta $700.000 en Turquía', descripcion:'DESCUENTO DE HASTA $700.000 EN SALIDAS PUNTUALES DESDE MEDELLÍN Y BOGOTÁ PARA TURQUÍA Y SUS COMBINADOS.' },
+  { id:4, titulo:'Premio #4 · 2×1 Alojamiento San Andrés y Santa Marta', descripcion:'2X1 EN ALOJAMIENTO EN SAN ANDRÉS Y SANTA MARTA EN FECHAS PUNTUALES EN 2026 Y 2027.' },
+  { id:5, titulo:'Premio #5 · Hasta 50% 2ª y 3ª Persona · Europa / Asia', descripcion:'DESCUENTOS DE LA SEGUNDA Y TERCERA PERSONA DE HASTA EL 50% EN SALIDAS PUNTUALES DE 2026 Y 2027 PARA EUROPA, MEDIO ORIENTE Y TAILANDIA. APLICA ANTES DE IMPUESTOS.' },
+  { id:6, titulo:'Premio #6 · Descuento 10% Caribe Colombiano', descripcion:'BONO DESCUENTO DE 10% EN SALIDAS PUNTUALES EN TEMPORADA BAJA PARA VIAJES NACIONALES Y POR EL CARIBE COLOMBIANO (SANTA MARTA, CARTAGENA Y SAN ANDRÉS). APLICA DE 1 A 4 PERSONAS EN LA MISMA RESERVA.' },
+  { id:7, titulo:'Premio #7 · Descuento hasta $200.000 en Suramérica', descripcion:'DESCUENTO DE HASTA $200.000 EN SALIDAS PUNTUALES DESDE MEDELLÍN Y BOGOTÁ PARA SURAMÉRICA.' },
+  { id:8, titulo:'Premio #8 · 2×1 Alojamiento Punta Cana y Cancún', descripcion:'2X1 EN ALOJAMIENTO EN PUNTA CANA Y CANCÚN EN FECHAS PUNTUALES EN 2026 Y 2027.' },
+  { id:9, titulo:'Premio #9 · Descuento 8% Destinos Culturales', descripcion:'BONO DESCUENTO DE 8% EN SALIDAS TERRESTRES PUNTUALES EN TEMPORADA BAJA PARA VIAJES DE CULTURA (EJE CAFETERO, SANTANDER, BOYACÁ Y MUCHOS DESTINOS MÁS). APLICA DE 1 A 4 PERSONAS EN LA MISMA RESERVA.' },
+  { id:10, titulo:'Premio #10 · Descuento hasta $500.000 en Europa', descripcion:'DESCUENTO DE HASTA $500.000 EN SALIDAS PUNTUALES DESDE MEDELLÍN Y BOGOTÁ PARA EUROPA.' }
+];
+
+const STORAGE_KEY = 'sorteo_viajes_2026';
+function obtenerRegistros() { try { const r=localStorage.getItem(STORAGE_KEY); return r?JSON.parse(r):[]; } catch { return []; } }
+function guardarRegistros(r) { localStorage.setItem(STORAGE_KEY, JSON.stringify(r)); }
+function agregarRegistro(r) { const t=obtenerRegistros(); t.push(r); guardarRegistros(t); }
+
+function validarFormulario() {
+  let ok=true;
+  const nombre=document.getElementById('nombre').value.trim();
+  const cedula=document.getElementById('cedula').value.trim();
+  const telefono=document.getElementById('telefono').value.trim();
+  const email=document.getElementById('email').value.trim();
+  limpiarErrores();
+  if(!nombre||nombre.length<3){ setError('nombre','error-nombre','Ingresa tu nombre completo (mínimo 3 caracteres).'); ok=false; } else setValido('nombre');
+  if(!cedula||!/^\d{5,12}$/.test(cedula)){ setError('cedula','error-cedula','La cédula debe tener entre 5 y 12 dígitos numéricos.'); ok=false; } else setValido('cedula');
+  const tel=telefono.replace(/[\s\-\(\)\.]/g,'');
+  if(!tel||!/^(\+?57)?3\d{9}$/.test(tel)){ setError('telefono','error-telefono','Ingresa un número celular colombiano válido (Ej: 3001234567).'); ok=false; } else setValido('telefono');
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ setError('email','error-email','Ingresa un correo electrónico válido.'); ok=false; } else setValido('email');
+  return ok;
+}
+function setError(fId,eId,msg) { const i=document.getElementById(fId),s=document.getElementById(eId); if(i){i.classList.add('input-error');i.classList.remove('input-valid');} if(s)s.textContent=msg; }
+function setValido(fId) { const i=document.getElementById(fId); if(i){i.classList.remove('input-error');i.classList.add('input-valid');} }
+function limpiarErrores() {
+  ['nombre','cedula','telefono','email'].forEach(id=>{ const i=document.getElementById(id); if(i)i.classList.remove('input-error','input-valid'); });
+  ['error-nombre','error-cedula','error-telefono','error-email'].forEach(id=>{ const e=document.getElementById(id); if(e)e.textContent=''; });
+}
+function buscarDuplicado(cedula,email) { const r=obtenerRegistros(),em=email.toLowerCase(); return r.find(x=>x.cedula===cedula||x.email===em)??null; }
+function asignarPremioAleatorio() { return PREMIOS[Math.floor(Math.random()*PREMIOS.length)]; }
+
+function mostrarPremio(registro) {
+  document.getElementById('ganador-nombre').textContent=registro.nombre;
+  document.getElementById('premio-titulo').textContent=registro.premio.titulo;
+  document.getElementById('premio-texto').textContent=registro.premio.descripcion;
+  document.getElementById('formulario-sorteo').classList.add('hidden');
+  const s=document.getElementById('premio-section');
+  s.classList.remove('hidden');
+  setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'start'}),80);
+  lanzarConfetti();
+}
+
+function lanzarConfetti() {
+  const c=document.getElementById('confetti-container'); if(!c)return; c.innerHTML='';
+  const cols=['#9B9B27','#C8C840','#333333','#FAFAF5','#7A7A1E','#ffffff','#F4F1E8'];
+  for(let i=0;i<48;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    const circ=Math.random()>0.55;
+    p.style.cssText=`left:${Math.random()*100}%;top:-15px;width:${5+Math.random()*9}px;height:${5+Math.random()*9}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${circ?'50%':'2px'};animation-name:lluviConfetti;animation-duration:${1.4+Math.random()*2.2}s;animation-delay:${Math.random()*0.9}s;animation-fill-mode:forwards;animation-timing-function:linear;`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>{c.innerHTML='';},4500);
+}
+
+const WA_NUMERO='573217505345';
+function reclamarPremio() {
+  const nombre=document.getElementById('ganador-nombre').textContent;
+  const pt=document.getElementById('premio-titulo').textContent;
+  const pd=document.getElementById('premio-texto').textContent;
+  const msg=`🏆 *RECLAMO DE PREMIO - Sorteo paraeviaje 2026*\n\n👤 *Nombre:* ${nombre}\n🎁 *Premio ganado:* ${pt}\n\n📋 *Detalle:*\n${pd}\n\n⭐ Aplica para compras ≥ $25.000 · Válido 2026–2027\n\n_Mensaje generado automáticamente desde el sorteo._`;
+  window.open(`https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+}
+
+function compartirPremio() {
+  const pd=document.getElementById('premio-texto').textContent;
+  const texto=`🏆 ¡Gané un premio de viajes con paraeviaje!\n\n${pd}\n\n⭐ Aplica para compras ≥ $25.000 · Válido 2026–2027`;
+  if(navigator.share){ navigator.share({title:'¡Gané con paraeviaje!',text:texto}).catch(()=>{}); }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(texto).then(()=>mostrarToast('✅ Texto copiado al portapapeles','success')).catch(()=>mostrarToast('No se pudo copiar. Toma una captura.','warn')); }
+  else { mostrarToast('Comparte tu pantalla o toma una captura.','warn'); }
+}
+
+function reiniciarPagina() {
+  document.getElementById('registroForm').reset();
+  limpiarErrores();
+  document.getElementById('premio-section').classList.add('hidden');
+  document.getElementById('formulario-sorteo').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('formulario-sorteo').scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+
+function toggleAdmin() {
+  const s=document.getElementById('admin-section');
+  if(s.classList.contains('hidden')){ s.classList.remove('hidden'); renderizarTablaAdmin(); setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'start'}),80); }
+  else { s.classList.add('hidden'); }
+}
+
+function renderizarTablaAdmin() {
+  const regs=obtenerRegistros(), tbody=document.getElementById('admin-tbody'), noR=document.getElementById('no-records'), stats=document.getElementById('admin-stats');
+  const ultima=regs.length>0?new Date(regs[regs.length-1].fecha).toLocaleDateString('es-CO'):'—';
+  stats.innerHTML=`<div class="stat-box"><span class="admin-stat-number">${regs.length}</span><span class="admin-stat-label">Participantes</span></div><div class="stat-box"><span class="admin-stat-number">${new Set(regs.map(r=>r.premio.id)).size}</span><span class="admin-stat-label">Premios distintos</span></div><div class="stat-box"><span class="admin-stat-number">${ultima}</span><span class="admin-stat-label">Último registro</span></div>`;
+  if(regs.length===0){ tbody.innerHTML=''; noR.classList.remove('hidden'); return; }
+  noR.classList.add('hidden');
+  tbody.innerHTML=[...regs].reverse().map((r,i)=>`<tr><td>${regs.length-i}</td><td>${esc(r.nombre)}</td><td>${esc(r.cedula)}</td><td>${esc(r.telefono)}</td><td>${esc(r.email)}</td><td style="max-width:180px;font-size:0.7rem;line-height:1.4;">${esc(r.premio.titulo)}</td><td>${new Date(r.fecha).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</td></tr>`).join('');
+}
+
+function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function exportarJSON() {
+  const r=obtenerRegistros();
+  if(!r.length){ mostrarToast('No hay registros para exportar.','warn'); return; }
+  const blob=new Blob([JSON.stringify({evento:'Sorteo paraeviaje 2026',exportado_en:new Date().toISOString(),total_participantes:r.length,registros:r},null,2)],{type:'application/json;charset=utf-8'});
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=`registros_sorteo_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  mostrarToast(`✅ ${r.length} registro(s) exportados correctamente.`,'success');
+}
+
+function limpiarRegistros() {
+  if(!confirm('⚠️ ¿Seguro que deseas eliminar TODOS los registros?\n\nEsta acción no se puede deshacer.'))return;
+  localStorage.removeItem(STORAGE_KEY); renderizarTablaAdmin();
+  mostrarToast('🗑️ Todos los registros han sido eliminados.','warn');
+}
+
+function mostrarToast(msg, tipo='info') {
+  document.querySelector('.toast')?.remove();
+  const t=document.createElement('div'); t.className=`toast toast-${tipo}`; t.textContent=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),420); },3500);
+}
+
+// FORM SUBMIT
+document.getElementById('registroForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if(!validarFormulario()){ mostrarToast('Por favor corrige los errores antes de continuar.','error'); return; }
+  const nombre=document.getElementById('nombre').value.trim();
+  const cedula=document.getElementById('cedula').value.trim();
+  const telefono=document.getElementById('telefono').value.trim();
+  const email=document.getElementById('email').value.trim().toLowerCase();
+  const dup=buscarDuplicado(cedula,email);
+  if(dup){ const campo=dup.cedula===cedula?'cédula':'correo electrónico'; mostrarToast(`⚠️ Ya participaste con este ${campo}. Tu premio: "${dup.premio.titulo}"`, 'warn'); setTimeout(()=>mostrarPremio(dup),600); return; }
+  const premio=asignarPremioAleatorio();
+  const registro={ id:`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`, nombre, cedula, telefono, email, premio, fecha:new Date().toISOString() };
+  agregarRegistro(registro);
+  mostrarPremio(registro);
+});
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  window.verRegistros = function(){ const r=obtenerRegistros(); if(!r.length){console.info('No hay registros.');return[];} console.table(r.map(x=>({Nombre:x.nombre,Cédula:x.cedula,Email:x.email,Premio:x.premio.titulo,Fecha:new Date(x.fecha).toLocaleString('es-CO')}))); return r; };
+  window.exportarJSON=exportarJSON; window.limpiarRegistros=limpiarRegistros; window.toggleAdmin=toggleAdmin;
+  console.log('%c✈️ paraeviaje — Sorteo 2026','font-size:16px;color:#9B9B27;font-weight:900;');
+});
+</script>
+</body>
+</html>
