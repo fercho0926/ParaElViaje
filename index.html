@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="paraeviaje — Tus sueños viajan con nosotros. Agencia de viajes Colombia.">
+<title>paraeviaje — Tus sueños viajan con nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     BARRA DE TABS
+============================================================ -->
+<div class="tabs-bar" role="tablist">
+  <button class="tab-btn active" id="tab-landing" onclick="switchTab('landing')" role="tab" aria-selected="true">
+    <span class="tab-icon">✈️</span>
+    <span class="tab-label">paraeviaje</span>
+  </button>
+  <button class="tab-btn" id="tab-sorteo" onclick="switchTab('sorteo')" role="tab" aria-selected="false">
+    <span class="tab-icon">🎁</span>
+    <span class="tab-label">Sorteo 2026</span>
+  </button>
+</div>
+
+<!-- ============================================================
+     MOBILE MENU (landing)
+============================================================ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#destinos" class="mobile-link">Destinos</a>
+  <a href="#experiencias" class="mobile-link">Experiencias</a>
+  <a href="#galeria" class="mobile-link">Galería</a>
+  <a href="#nosotros" class="mobile-link">Nosotros</a>
+  <a href="#cta" class="mobile-link" style="color:var(--oliva-light)">Cotizar</a>
+</div>
+
+<!-- ============================================================
+     TAB 1: LANDING PAGE
+============================================================ -->
+<div class="page active" id="page-landing">
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" style="text-decoration:none;display:flex;align-items:center;">
+      <svg width="170" height="46" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="#58595B">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)">
+          <polygon points="0,-5 13,0 0,5" fill="#9B9B27"/>
+          <polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/>
+        </g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="#58595B">viaje</text>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#destinos">Destinos</a></li>
+      <li><a href="#experiencias">Experiencias</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#cta" class="nav-cta">Cotizar viaje</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-slides">
+      <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1800&q=85')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800&q=85')"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><div class="hero-badge-dot"></div><span>Tus sueños viajan con nosotros</span></div>
+      <h1 class="hero-title">El mundo es<br><span class="cursiva">demasiado grande</span><br>para quedarse quieto.</h1>
+      <p class="hero-sub">Desde el corazón de Colombia hasta los rincones más remotos del planeta. Creamos viajes que transforman.</p>
+      <div class="hero-actions">
+        <a href="#destinos" class="btn-primary">Ver destinos</a>
+        <a href="#cta" class="btn-outline">Cotizar ahora</a>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot" data-i="3"></div>
+      <div class="dot" data-i="4"></div>
+    </div>
+    <div class="hero-counter" id="heroCounter">01 / 05</div>
+    <div class="slide-location" id="slideLocation">📍 En algún lugar del mundo</div>
+    <div class="hero-scroll-hint"><span>Descubrir</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-strip reveal">
+    <div class="stat-item"><span class="stat-number" data-target="85">0</span><span class="stat-label">Países visitados</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="5000">0</span><span class="stat-label">Viajeros felices</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="98">0</span><span class="stat-label">% satisfacción</span></div>
+    <div class="stat-item"><span class="stat-number" data-target="8">0</span><span class="stat-label">Años de experiencia</span></div>
+  </div>
+
+  <!-- DESTINOS -->
+  <section class="destinations" id="destinos">
+    <div class="dest-header reveal">
+      <div>
+        <p class="section-tag">Destinos populares</p>
+        <h2 class="section-title">¿A dónde quieres<br><span class="cursiva">escapar?</span></h2>
+        <p class="section-sub">Exploramos el planeta para traerte los destinos que cambiarán tu vida.</p>
+      </div>
+      <div class="dest-nav"><button class="arr-btn" id="prevBtn">←</button><button class="arr-btn" id="nextBtn">→</button></div>
+    </div>
+    <div class="cards-track-wrap">
+      <div class="cards-track" id="cardsTrack">
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=700&q=85')"><span class="dest-card-tag">🔥 Más popular</span></div><div class="dest-card-body"><p class="dest-card-region">Asia · Japón</p><h3 class="dest-card-name">Tokio y Kioto</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,200 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=700&q=85')"><span class="dest-card-tag">🌴 Paraíso</span></div><div class="dest-card-body"><p class="dest-card-region">Asia · Maldivas</p><h3 class="dest-card-name">Maldivas<br>Tropical</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$4,100 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Italia</p><h3 class="dest-card-name">Costa<br>Amalfitana</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,450 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1583001809873-a128495da465?w=700&q=85')"><span class="dest-card-tag">🌿 Eco</span></div><div class="dest-card-body"><p class="dest-card-region">Sudamérica · Colombia</p><h3 class="dest-card-name">Cartagena<br>de Indias</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$890 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1526392060635-9d6019884377?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">África · Marruecos</p><h3 class="dest-card-name">Desierto<br>del Sahara</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,100 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Suiza</p><h3 class="dest-card-name">Alpes<br>Nevados</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$3,800 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=700&q=85')"><span class="dest-card-tag">⭐ Favorito</span></div><div class="dest-card-body"><p class="dest-card-region">Oceanía · Bali</p><h3 class="dest-card-name">Bali<br>Espiritual</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,350 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Europa · Grecia</p><h3 class="dest-card-name">Santorini<br>Azul</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,900 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1500835556837-99ac94a94552?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Norteamérica · EE.UU.</p><h3 class="dest-card-name">Gran<br>Cañón</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$2,200 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+        <div class="dest-card"><div class="dest-card-img" style="background-image:url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=700&q=85')"></div><div class="dest-card-body"><p class="dest-card-region">Sudamérica · Brasil</p><h3 class="dest-card-name">Río de<br>Janeiro</h3><div class="dest-card-meta"><p class="dest-card-price">desde <strong>$1,650 USD</strong></p><a href="#cta" class="dest-card-btn">Ver más</a></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOSAICO -->
+  <section class="mosaic-section reveal" id="galeria">
+    <p class="section-tag">Galería de sueños</p>
+    <h2 class="section-title">Un mundo por <span class="cursiva">descubrir.</span></h2>
+    <div class="mosaic-grid">
+      <div class="mosaic-cell large" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=85')"><div class="mosaic-label">Europa del Norte<small>Noruega · Fiordos</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=85')"><div class="mosaic-label">Taj Mahal<small>India · Asia</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&q=85')"><div class="mosaic-label">Playa Tropical<small>Tailandia</small></div></div>
+      <div class="mosaic-cell tall" style="background-image:url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=85')"><div class="mosaic-label">Coliseo Romano<small>Italia · Roma</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=85')"><div class="mosaic-label">Selva Amazónica<small>Sudamérica</small></div></div>
+      <div class="mosaic-cell" style="background-image:url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&q=85')"><div class="mosaic-label">Dubai<small>Emiratos Árabes</small></div></div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <div class="feature-section" id="nosotros">
+    <div class="feature-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=900&q=85')"></div>
+    <div class="feature-text reveal">
+      <p class="section-tag">Por qué elegirnos</p>
+      <h2 class="section-title">Viajes que se<br>sienten <span class="cursiva">de verdad.</span></h2>
+      <p class="section-sub">No vendemos paquetes genéricos. Construimos cada viaje a la medida de tus sueños.</p>
+      <ul class="feature-list">
+        <li><div class="feat-icon">✈️</div><div class="feat-text"><strong>Itinerarios 100% personalizados</strong>Cada viaje es único, diseñado para tu ritmo, gustos y presupuesto.</div></li>
+        <li><div class="feat-icon">🗺️</div><div class="feat-text"><strong>Guías locales expertos</strong>Personas que conocen cada rincón de su tierra con historias únicas.</div></li>
+        <li><div class="feat-icon">📞</div><div class="feat-text"><strong>Soporte 24/7 en viaje</strong>Estamos contigo en cualquier momento, en cualquier huso horario.</div></li>
+        <li><div class="feat-icon">🌿</div><div class="feat-text"><strong>Turismo responsable</strong>Viajamos con respeto por las comunidades y el medio ambiente.</div></li>
+      </ul>
+      <a href="#cta" class="btn-primary" style="display:inline-block;margin-top:0.5rem;text-decoration:none;">Quiero mi viaje</a>
+    </div>
+  </div>
+
+  <!-- EXPERIENCIAS -->
+  <section class="experiences" id="experiencias">
+    <div class="exp-header reveal">
+      <p class="section-tag">Lo que ofrecemos</p>
+      <h2 class="section-title">Experiencias para<br>cada <span class="cursiva">espíritu viajero.</span></h2>
+    </div>
+    <div class="exp-grid reveal">
+      <div class="exp-item"><div class="exp-icon">🏔</div><h3 class="exp-title">Aventura extrema</h3><p class="exp-desc">Trekkings, escaladas y expediciones donde cada paso es un logro que nadie puede quitarte.</p></div>
+      <div class="exp-item"><div class="exp-icon">🏛</div><h3 class="exp-title">Cultura e historia</h3><p class="exp-desc">Museos, festivales y rituales ancestrales que amplían tu forma de ver el mundo.</p></div>
+      <div class="exp-item"><div class="exp-icon">🌊</div><h3 class="exp-title">Playa y paraíso</h3><p class="exp-desc">Playas vírgenes, arrecifes de coral y pueblos de pescadores que el tiempo no ha tocado.</p></div>
+      <div class="exp-item"><div class="exp-icon">🍜</div><h3 class="exp-title">Turismo gastronómico</h3><p class="exp-desc">Mercados locales, clases de cocina y sabores que narran la historia entera de un pueblo.</p></div>
+      <div class="exp-item"><div class="exp-icon">🧘</div><h3 class="exp-title">Bienestar y retiro</h3><p class="exp-desc">Desconéctate del ruido. Retiros de meditación en entornos naturales que sanan el alma.</p></div>
+      <div class="exp-item"><div class="exp-icon">💍</div><h3 class="exp-title">Lunas de miel</h3><p class="exp-desc">El viaje más especial de tu vida, diseñado con cada detalle para que sea perfecto.</p></div>
+    </div>
+  </section>
+
+  <!-- GALERÍA ANIMADA -->
+  <div class="gallery-section">
+    <div class="gallery-title reveal">
+      <p class="section-tag" style="justify-content:center;">El mundo en imágenes</p>
+      <h2 class="section-title">Lugares que te <span class="cursiva">llaman.</span></h2>
+    </div>
+    <div class="gallery-strip">
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1535530992830-e25d07cfa780?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1535530992830-e25d07cfa780?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=500&q=80')"></div>
+      <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80')"></div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonials">
+    <div class="test-header reveal">
+      <p class="section-tag">Voces reales</p>
+      <h2 class="section-title">Lo que dicen<br><span class="cursiva">nuestros viajeros.</span></h2>
+    </div>
+    <div class="test-grid reveal">
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">Nunca pensé que un viaje pudiera cambiarme tanto. Bali fue una experiencia que llevo tatuada en el corazón. Gracias, paraeviaje.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80')"></div><div><div class="test-name">Valentina Ríos</div><div class="test-trip">→ Bali, Indonesia</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">El Sahara de noche, bajo un millón de estrellas. No hay palabras para describirlo. Solo sé que volvería mañana mismo si pudiera.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80')"></div><div><div class="test-name">Mateo Guzmán</div><div class="test-trip">→ Sahara, Marruecos</div></div></div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"</div><p class="test-text">Japón era mi sueño desde niña. Paraeviaje lo hizo realidad con cada detalle pensado. Un viaje perfecto, de principio a fin.</p><div class="test-author"><div class="test-avatar" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80')"></div><div><div class="test-name">Lucía Moreno</div><div class="test-trip">→ Kioto, Japón</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- TAGLINE -->
+  <div class="tagline-section reveal">
+    <p class="tagline-big"><span>Tus sueños viajan con nosotros</span>paraeviaje</p>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <p class="section-tag" style="justify-content:center;color:var(--oliva);">¡Contáctanos hoy!</p>
+    <h2 class="section-title" style="margin-bottom:0.8rem;">¿Listo para tu próxima<br><span class="cursiva">aventura?</span></h2>
+    <p class="section-sub" style="margin:0 auto;">Habla directamente con nuestros asesores por WhatsApp. Te diseñamos el viaje perfecto a tu medida.</p>
+    <div style="text-align:center;margin-top:2rem;position:relative;z-index:1;">
+      <a href="https://wa.me/573174027066?text=Hola%2C%20me%20gustar%C3%ADa%20cotizar%20un%20viaje%20con%20Para%20El%20Viaje" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:1rem;padding:1.1rem 2.8rem;display:inline-flex;align-items:center;gap:0.7rem;text-decoration:none;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Cotizar por WhatsApp
+      </a>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:1.2rem;font-family:'DM Mono',monospace;">Respuesta rápida · Sin compromiso · 100% personalizado</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <svg width="140" height="40" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.55)">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)"><polygon points="0,-5 13,0 0,5" fill="#9B9B27"/><polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/></g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.55)">viaje</text>
+      </svg>
+      <p class="footer-tagline">Tus sueños viajan con nosotros · @paraviajetravel</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#destinos">Destinos</a></li>
+      <li><a href="#experiencias">Experiencias</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#cta">Cotizar</a></li>
+      <li><a href="https://www.instagram.com/paraviajetravel" target="_blank" style="color:var(--oliva-light)!important;">Instagram ↗</a></li>
+    </ul>
+  </footer>
+
+</div><!-- /page-landing -->
+
+
+<!-- ============================================================
+     TAB 2: SORTEO 2026
+============================================================ -->
+<div class="page" id="page-sorteo">
+  <div class="sorteo-page">
+
+    <!-- HERO SORTEO -->
+    <div class="sorteo-hero">
+      <div class="sorteo-hero-content">
+        <span class="sorteo-logo-icon">✈️</span>
+        <h1>¡Viaja y<br><span class="cursiva">Gana!</span></h1>
+        <span class="sorteo-hero-sub">Gran Sorteo de Premios · 2026</span>
+        <p class="sorteo-hero-desc">Escaneaste nuestro código QR y ya eres parte de esta experiencia.<br>Completa tus datos y descubre el premio que el mundo tiene reservado para ti.</p>
+        <a href="#formulario-sorteo" class="sorteo-btn-hero">Participar Ahora 🎁</a>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="sorteo-body">
+      <section id="formulario-sorteo">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="form-icon">🌍</span>
+            <h2>Registro de Participante</h2>
+            <p>Completa tus datos para descubrir tu premio</p>
+          </div>
+          <form id="registroForm" novalidate autocomplete="on">
+            <div class="form-group">
+              <label for="nombre">Nombre Completo <span class="required">*</span></label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: María González Pérez" autocomplete="name" required>
+              <span class="error-msg" id="error-nombre" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="cedula">Número de Cédula <span class="required">*</span></label>
+              <input type="text" id="cedula" name="cedula" placeholder="Ej: 1023456789" inputmode="numeric" autocomplete="off" required>
+              <span class="error-msg" id="error-cedula" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono / Celular <span class="required">*</span></label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Ej: 3001234567" inputmode="tel" autocomplete="tel" required>
+              <span class="error-msg" id="error-telefono" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="Ej: maria@correo.com" autocomplete="email" required>
+              <span class="error-msg" id="error-email" role="alert" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="btn-submit" id="btnSubmit">
+              <span class="btn-text">¡Descubrir mi Premio!</span>
+              <span class="btn-icon">🎁</span>
+            </button>
+          </form>
+          <div class="legal-note" role="contentinfo">
+            <p>* Los descuentos aplican antes de impuestos. Para temporada media y alta validar descuentos y beneficios. Válido para 2026 y 2027.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN PREMIO -->
+      <section id="premio-section" class="prize-section hidden" aria-live="polite">
+        <div class="prize-card">
+          <div class="prize-confetti" id="confetti-container" aria-hidden="true"></div>
+          <div class="prize-header">
+            <div class="prize-trophy">🏆</div>
+            <h2 class="prize-title">¡Felicitaciones!</h2>
+            <p class="prize-winner-name" id="ganador-nombre"></p>
+            <p class="prize-subtitle">Has ganado el siguiente premio:</p>
+          </div>
+          <div class="prize-box">
+            <div class="prize-number" id="premio-titulo"></div>
+            <div class="prize-description" id="premio-texto"></div>
+          </div>
+          <div class="prize-footer-note">
+            <p>⭐ Aplica para compras ≥ $25.000 · Válido 2026–2027</p>
+            <p>Un asesor de viajes se comunicará contigo para hacer efectivo tu premio.</p>
+          </div>
+          <button class="btn-reclamar" onclick="reclamarPremio()">
+            <span>📲 Reclamar Premio por WhatsApp</span>
+          </button>
+          <div class="prize-actions">
+            <button class="btn-share" onclick="compartirPremio()">📤 Compartir</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL ADMIN -->
+      <section id="admin-section" class="admin-section hidden">
+        <div class="admin-card">
+          <div class="admin-header">
+            <h3>Panel de Registros</h3>
+            <div class="admin-actions">
+              <button class="btn-export" onclick="exportarJSON()">⬇️ Exportar JSON</button>
+              <button class="btn-clear" onclick="limpiarRegistros()">🗑️ Limpiar Todo</button>
+              <button class="btn-close-admin" onclick="toggleAdmin()">✕ Cerrar</button>
+            </div>
+          </div>
+          <div class="admin-stats" id="admin-stats"></div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table" id="admin-tabla">
+              <thead>
+                <tr><th>#</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Premio</th><th>Fecha</th></tr>
+              </thead>
+              <tbody id="admin-tbody"></tbody>
+            </table>
+            <p class="no-records hidden" id="no-records">No hay registros aún.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /sorteo-body -->
+
+    <!-- FOOTER SORTEO -->
+    <div class="sorteo-footer">
+      <svg width="110" height="30" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.5rem;">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)"><polygon points="0,-5 13,0 0,5" fill="#9B9B27"/><polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/></g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">viaje</text>
+      </svg>
+      <p>© 2026 paraeviaje · Todos los derechos reservados</p>
+      <p>Los premios aplican para compras ≥ $25.000 · Descuentos antes de impuestos · Válido 2026–2027</p>
+    </div>
+
+  </div><!-- /sorteo-page -->
+</div><!-- /page-sorteo -->
+
+<!-- Botón admin flotante (solo visible en tab sorteo) -->
+<button class="btn-admin-float" id="btnAdminFloat" onclick="toggleAdmin()" title="Panel Admin" aria-label="Abrir panel de administración">⚙️</button>
+
+<!-- Toast -->
+<div class="notif" id="notif">✓ ¡Genial! Te escribiremos muy pronto. Prepárate para viajar 🌍</div>
+
+<script src="script.js"></script>
+</body>
+</html>

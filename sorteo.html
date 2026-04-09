@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="paraeviaje — Tus sueños viajan con nosotros. Agencia de viajes Colombia.">
+<title>paraeviaje — Tus sueños viajan con nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="page active">
+  <div class="sorteo-page">
+
+    <!-- HERO SORTEO -->
+    <div class="sorteo-hero">
+      <div class="sorteo-hero-content">
+        <span class="sorteo-logo-icon">✈️</span>
+        <h1>¡Viaja y<br><span class="cursiva">Gana!</span></h1>
+        <span class="sorteo-hero-sub">Gran Sorteo de Premios · 2026</span>
+        <p class="sorteo-hero-desc">Escaneaste nuestro código QR y ya eres parte de esta experiencia.<br>Completa tus datos y descubre el premio que el mundo tiene reservado para ti.</p>
+        <a href="#formulario-sorteo" class="sorteo-btn-hero">Participar Ahora 🎁</a>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="sorteo-body">
+      <section id="formulario-sorteo">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="form-icon">🌍</span>
+            <h2>Registro de Participante</h2>
+            <p>Completa tus datos para descubrir tu premio</p>
+          </div>
+          <form id="registroForm" novalidate autocomplete="on">
+            <div class="form-group">
+              <label for="nombre">Nombre Completo <span class="required">*</span></label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: María González Pérez" autocomplete="name" required>
+              <span class="error-msg" id="error-nombre" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="cedula">Número de Cédula <span class="required">*</span></label>
+              <input type="text" id="cedula" name="cedula" placeholder="Ej: 1023456789" inputmode="numeric" autocomplete="off" required>
+              <span class="error-msg" id="error-cedula" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono / Celular <span class="required">*</span></label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Ej: 3001234567" inputmode="tel" autocomplete="tel" required>
+              <span class="error-msg" id="error-telefono" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="Ej: maria@correo.com" autocomplete="email" required>
+              <span class="error-msg" id="error-email" role="alert" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="btn-submit" id="btnSubmit">
+              <span class="btn-text">¡Descubrir mi Premio!</span>
+              <span class="btn-icon">🎁</span>
+            </button>
+          </form>
+          <div class="legal-note" role="contentinfo">
+            <p>* Los descuentos aplican antes de impuestos. Para temporada media y alta validar descuentos y beneficios. Válido para 2026 y 2027.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN PREMIO -->
+      <section id="premio-section" class="prize-section hidden" aria-live="polite">
+        <div class="prize-card">
+          <div class="prize-confetti" id="confetti-container" aria-hidden="true"></div>
+          <div class="prize-header">
+            <div class="prize-trophy">🏆</div>
+            <h2 class="prize-title">¡Felicitaciones!</h2>
+            <p class="prize-winner-name" id="ganador-nombre"></p>
+            <p class="prize-subtitle">Has ganado el siguiente premio:</p>
+          </div>
+          <div class="prize-box">
+            <div class="prize-number" id="premio-titulo"></div>
+            <div class="prize-description" id="premio-texto"></div>
+          </div>
+          <div class="prize-footer-note">
+            <p>⭐ Aplica para compras ≥ $25.000 · Válido 2026–2027</p>
+            <p>Un asesor de viajes se comunicará contigo para hacer efectivo tu premio.</p>
+          </div>
+          <button class="btn-reclamar" onclick="reclamarPremio()">
+            <span>📲 Reclamar Premio por WhatsApp</span>
+          </button>
+          <div class="prize-actions">
+            <button class="btn-share" onclick="compartirPremio()">📤 Compartir</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL ADMIN -->
+      <section id="admin-section" class="admin-section hidden">
+        <div class="admin-card">
+          <div class="admin-header">
+            <h3>Panel de Registros</h3>
+            <div class="admin-actions">
+              <button class="btn-export" onclick="exportarJSON()">⬇️ Exportar JSON</button>
+              <button class="btn-clear" onclick="limpiarRegistros()">🗑️ Limpiar Todo</button>
+              <button class="btn-close-admin" onclick="toggleAdmin()">✕ Cerrar</button>
+            </div>
+          </div>
+          <div class="admin-stats" id="admin-stats"></div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table" id="admin-tabla">
+              <thead>
+                <tr><th>#</th><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Premio</th><th>Fecha</th></tr>
+              </thead>
+              <tbody id="admin-tbody"></tbody>
+            </table>
+            <p class="no-records hidden" id="no-records">No hay registros aún.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /sorteo-body -->
+
+    <!-- FOOTER SORTEO -->
+    <div class="sorteo-footer">
+      <svg width="110" height="30" viewBox="0 0 340 92" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.5rem;">
+        <text x="4" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">para</text>
+        <text x="118" y="64" font-family="Dancing Script,cursive" font-size="54" font-weight="700" fill="#9B9B27">e</text>
+        <path d="M132,24 Q156,8 184,20" stroke="#9B9B27" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <g transform="translate(177,12) rotate(-18)"><polygon points="0,-5 13,0 0,5" fill="#9B9B27"/><polygon points="0,0 -5,7 -5,-7" fill="#9B9B27" opacity="0.6"/></g>
+        <text x="156" y="62" font-family="Nunito,sans-serif" font-size="40" font-weight="700" fill="rgba(255,255,255,0.45)">viaje</text>
+      </svg>
+      <p>© 2026 paraeviaje · Todos los derechos reservados</p>
+      <p>Los premios aplican para compras ≥ $25.000 · Descuentos antes de impuestos · Válido 2026–2027</p>
+    </div>
+
+  </div><!-- /sorteo-page -->
+</div><!-- /page-sorteo -->
+
+<!-- Botón admin flotante (solo visible en tab sorteo) -->
+<button class="btn-admin-float" id="btnAdminFloat" onclick="toggleAdmin()" title="Panel Admin" aria-label="Abrir panel de administración">⚙️</button>
+
+<!-- Toast -->
+<div class="notif" id="notif">✓ ¡Genial! Te escribiremos muy pronto. Prepárate para viajar 🌍</div>
+
+<script src="sorteo.js"></script>
+</body>
+</html>
