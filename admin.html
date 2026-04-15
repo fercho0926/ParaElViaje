@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Sorteo paraelviaje 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@300;400;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --oliva:       #9B9B27;
+  --oliva-dark:  #7A7A1E;
+  --oliva-light: #C8C840;
+  --gris-dark:   #333333;
+  --cream:       #FAFAF5;
+  --sand:        #F4F1E8;
+  --ink:         #1E1E1E;
+  --muted:       #888880;
+  --border:      rgba(155,155,39,0.2);
+  --error:       #c0392b;
+  --success:     #27ae60;
+  --warn:        #e67e00;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── Login overlay ── */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--gris-dark);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+.login-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: var(--oliva-light);
+  letter-spacing: 0.04em;
+}
+.login-logo span { font-family: 'Nunito', sans-serif; font-size: 1.5rem; color: rgba(255,255,255,0.5); font-weight: 300; }
+.login-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(155,155,39,0.25);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 100%; max-width: 360px;
+  text-align: center;
+}
+.login-card h2 { color: var(--cream); font-size: 1.1rem; margin-bottom: 0.4rem; }
+.login-card p  { color: var(--muted); font-size: 0.82rem; margin-bottom: 1.8rem; font-family: 'DM Mono', monospace; }
+.login-input {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(155,155,39,0.3);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  color: var(--cream);
+  font-size: 1rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.2em;
+  outline: none;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.login-input:focus { border-color: var(--oliva-light); }
+.login-btn {
+  width: 100%;
+  background: var(--oliva);
+  color: #fff;
+  border: none; border-radius: 10px;
+  padding: 0.85rem;
+  font-size: 0.9rem; font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.login-btn:hover { background: var(--oliva-dark); }
+.login-error {
+  color: #e74c3c;
+  font-size: 0.78rem;
+  margin-top: 0.6rem;
+  font-family: 'DM Mono', monospace;
+  min-height: 1.2em;
+}
+
+/* ── Main layout ── */
+#main-screen { display: none; }
+#main-screen.visible { display: block; }
+
+/* ── Header ── */
+.admin-header-bar {
+  background: var(--gris-dark);
+  padding: 1.1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+}
+.header-brand {
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.header-brand-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6rem;
+  color: var(--oliva-light);
+}
+.header-brand-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.header-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.btn-action {
+  padding: 0.5rem 1rem;
+  border: none; border-radius: 8px;
+  font-size: 0.78rem; font-weight: 700;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-action:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-export  { background: var(--oliva);  color: #fff; }
+.btn-refresh { background: #2980b9;       color: #fff; }
+.btn-reset   { background: var(--warn);   color: #fff; }
+.btn-clear   { background: var(--error);  color: #fff; }
+.btn-logout  { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+
+/* ── Stats ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: var(--sand);
+  border-bottom: 1px solid var(--border);
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  text-align: center;
+}
+.stat-card-number {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--oliva);
+  line-height: 1;
+  display: block;
+}
+.stat-card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* ── Table ── */
+.table-section { padding: 1.5rem 2rem 3rem; }
+.table-title {
+  font-size: 0.78rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.table-title::before { content:''; display:inline-block; width:16px; height:1px; background:var(--oliva); }
+.table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: #fff; }
+table { width: 100%; border-collapse: collapse; font-size: 0.78rem; min-width: 640px; }
+thead th {
+  background: var(--gris-dark);
+  color: rgba(255,255,255,0.65);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+tbody td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #f5f8f0; }
+.badge-num {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; font-weight: 700;
+  background: rgba(155,155,39,0.12);
+  color: var(--oliva-dark);
+  border: 1px solid rgba(155,155,39,0.3);
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+.badge-special {
+  background: rgba(230,126,0,0.12);
+  color: var(--warn);
+  border-color: rgba(230,126,0,0.35);
+}
+.premio-cell { max-width: 200px; font-size: 0.7rem; line-height: 1.4; }
+.no-records {
+  text-align: center; padding: 3rem 1rem;
+  color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.82rem;
+}
+.loading-row {
+  text-align: center; padding: 3rem 1rem;
+  color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.82rem;
+}
+
+/* ── Search ── */
+.search-bar { padding: 0 2rem 1rem; }
+.search-input {
+  width: 100%; max-width: 380px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  font-size: 0.88rem;
+  font-family: 'Nunito', sans-serif;
+  outline: none;
+  background: #fff;
+  color: var(--ink);
+}
+.search-input:focus { border-color: var(--oliva); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+  opacity: 0; transition: all 0.3s ease;
+  background: var(--gris-dark); color: var(--cream);
+  padding: 0.75rem 1.4rem; border-radius: 10px;
+  font-size: 0.85rem; z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  max-width: 90vw; text-align: center;
+  pointer-events: none;
+  border-left: 3px solid var(--oliva);
+  font-family: 'Nunito', sans-serif;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.toast-success { border-left-color: var(--success); }
+.toast.toast-warn    { border-left-color: var(--warn); }
+.toast.toast-error   { border-left-color: var(--error); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .admin-header-bar { padding: 1rem; flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+  .stats-row { padding: 1rem; }
+  .table-section { padding: 1rem; }
+  .search-bar { padding: 0 1rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="login-screen">
+  <div class="login-logo"><span>para</span>elviaje</div>
+  <div class="login-card">
+    <h2>Panel Administrador</h2>
+    <p>Sorteo 2026 · Acceso restringido</p>
+    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" autocomplete="current-password">
+    <button class="login-btn" onclick="intentarLogin()">Ingresar ✈️</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div id="main-screen">
+
+  <header class="admin-header-bar">
+    <div class="header-brand">
+      <div>
+        <div class="header-brand-logo">paraelviaje</div>
+        <div class="header-brand-label">Panel Admin · Sorteo 2026</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-action btn-refresh" onclick="cargarDatos()">🔄 Actualizar</button>
+      <button class="btn-action btn-export"  onclick="exportarJSON()">⬇️ Exportar JSON</button>
+      <button class="btn-action btn-reset"   onclick="resetearContador()">🔢 Resetear Contador</button>
+      <button class="btn-action btn-clear"   onclick="limpiarRegistros()">🗑️ Limpiar Todo</button>
+      <button class="btn-action btn-logout"  onclick="cerrarSesion()">🔒 Salir</button>
+    </div>
+  </header>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card"><span class="stat-card-number">…</span><span class="stat-card-label">Cargando</span></div>
+  </div>
+
+  <div class="search-bar">
+    <input type="search" class="search-input" id="search-input" placeholder="🔍  Buscar por nombre, cédula, email…" oninput="filtrarTabla()">
+  </div>
+
+  <div class="table-section">
+    <div class="table-title">Registros de participantes</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>N° Part.</th>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Premio</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="8" class="loading-row">Cargando registros…</td></tr>
+        </tbody>
+      </table>
+      <p class="no-records" id="no-records" style="display:none">No hay registros aún.</p>
+    </div>
+  </div>
+
+</div><!-- /main-screen -->
+
+<script>
+'use strict';
+
+/* ── Config ── */
+const SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzByO8k_GjVjm_9FozdpO99wsepIRlXmvukSe0Mr549In6PlEU-boXNNW3JhXOqY_zs/exec';      // ← misma URL que en sorteo.js
+const ADMIN_PWD    = 'paraelviaje2026';   // ← misma contraseña que en Apps Script
+const SESSION_KEY  = 'admin_session_pev';
+
+let todosLosRegistros = [];
+let contadorActual = 0;
+
+/* ── API ── */
+async function api(data) {
+  const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+  return res.json();
+}
+
+/* ── Auth ── */
+async function intentarLogin() {
+  const val = document.getElementById('pwd-input').value;
+  if (!val) return;
+  const loginBtn = document.querySelector('.login-btn');
+  loginBtn.textContent = 'Verificando…';
+  loginBtn.disabled = true;
+
+  try {
+    const res = await api({ action: 'get_records', password: val });
+    if (res.ok) {
+      sessionStorage.setItem(SESSION_KEY, val);
+      mostrarAdmin(res);
+    } else {
+      mostrarLoginError('Contraseña incorrecta. Inténtalo de nuevo.');
+    }
+  } catch {
+    mostrarLoginError('Error de conexión con el servidor.');
+  } finally {
+    loginBtn.textContent = 'Ingresar ✈️';
+    loginBtn.disabled = false;
+  }
+}
+
+function mostrarLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  document.getElementById('pwd-input').value = '';
+  setTimeout(() => { el.textContent = ''; }, 3500);
+}
+
+document.getElementById('pwd-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') intentarLogin();
+});
+
+function mostrarAdmin(data) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-screen').classList.add('visible');
+  if (data) {
+    todosLosRegistros = data.registros || [];
+    contadorActual    = data.contador  || 0;
+    renderStats();
+    renderTabla(todosLosRegistros);
+  } else {
+    cargarDatos();
+  }
+}
+
+function cerrarSesion() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+
+/* ── Cargar datos desde el servidor ── */
+async function cargarDatos() {
+  const pwd = sessionStorage.getItem(SESSION_KEY);
+  document.getElementById('tbody').innerHTML = '<tr><td colspan="8" class="loading-row">Actualizando…</td></tr>';
+  try {
+    const res = await api({ action: 'get_records', password: pwd });
+    if (!res.ok) { toast('Error al cargar datos.', 'error'); return; }
+    todosLosRegistros = res.registros || [];
+    contadorActual    = res.contador  || 0;
+    renderStats();
+    filtrarTabla();
+    toast(`✓ ${todosLosRegistros.length} registros cargados.`, 'success');
+  } catch {
+    toast('❌ Error de conexión.', 'error');
+  }
+}
+
+/* ── Stats ── */
+function renderStats() {
+  const regs   = todosLosRegistros;
+  const ultima = regs.length > 0 ? new Date(regs[regs.length-1].fecha).toLocaleDateString('es-CO') : '—';
+  const primeros100 = regs.filter(r => r.numero && r.numero <= 100).length;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><span class="stat-card-number">${regs.length}</span><span class="stat-card-label">Participantes</span></div>
+    <div class="stat-card"><span class="stat-card-number">${contadorActual}</span><span class="stat-card-label">Contador actual</span></div>
+    <div class="stat-card"><span class="stat-card-number">${primeros100}</span><span class="stat-card-label">Primeros 100</span></div>
+    <div class="stat-card"><span class="stat-card-number">${new Set(regs.map(r => r.premio?.id)).size}</span><span class="stat-card-label">Premios distintos</span></div>
+    <div class="stat-card"><span class="stat-card-number">${ultima}</span><span class="stat-card-label">Último registro</span></div>`;
+}
+
+/* ── Tabla ── */
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function filtrarTabla() {
+  const query = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+  let lista = [...todosLosRegistros].reverse();
+  if (query) {
+    lista = lista.filter(r =>
+      r.nombre?.toLowerCase().includes(query) ||
+      r.cedula?.includes(query) ||
+      r.email?.toLowerCase().includes(query) ||
+      r.telefono?.includes(query)
+    );
+  }
+  renderTabla(lista);
+}
+
+function renderTabla(lista) {
+  const tbody = document.getElementById('tbody');
+  const noRec = document.getElementById('no-records');
+  if (!lista || !lista.length) {
+    tbody.innerHTML = '';
+    noRec.style.display = 'block';
+    return;
+  }
+  noRec.style.display = 'none';
+  tbody.innerHTML = lista.map((r, i) => {
+    const numBadge = r.numero
+      ? `<span class="badge-num${r.numero <= 100 ? ' badge-special' : ''}">${r.numero <= 100 ? '🌟 ' : ''}#${String(r.numero).padStart(3,'0')}</span>`
+      : '—';
+    return `<tr>
+      <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:0.7rem;">${i + 1}</td>
+      <td>${numBadge}</td>
+      <td><strong>${esc(r.nombre)}</strong></td>
+      <td style="font-family:'DM Mono',monospace;">${esc(r.cedula)}</td>
+      <td style="font-family:'DM Mono',monospace;">${esc(r.telefono)}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:0.72rem;">${esc(r.email)}</td>
+      <td class="premio-cell">${esc(r.premio?.titulo)}</td>
+      <td style="font-size:0.7rem;color:var(--muted);white-space:nowrap;">${new Date(r.fecha).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Acciones ── */
+function exportarJSON() {
+  if (!todosLosRegistros.length) { toast('No hay registros para exportar.', 'warn'); return; }
+  const blob = new Blob([JSON.stringify({
+    evento: 'Sorteo paraelviaje 2026',
+    exportado_en: new Date().toISOString(),
+    total_participantes: todosLosRegistros.length,
+    contador_actual: contadorActual,
+    registros: todosLosRegistros
+  }, null, 2)], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = `registros_sorteo_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast(`✓ ${todosLosRegistros.length} registro(s) exportados.`, 'success');
+}
+
+async function limpiarRegistros() {
+  if (!confirm('⚠️ ¿Eliminar TODOS los registros del servidor?\n\nEsta acción no se puede deshacer.\nEl contador de números NO se reinicia.')) return;
+  try {
+    const res = await api({ action: 'clear_records', password: sessionStorage.getItem(SESSION_KEY) });
+    if (!res.ok) throw new Error();
+    todosLosRegistros = [];
+    renderStats(); renderTabla([]);
+    toast('🗑️ Registros eliminados del servidor.', 'warn');
+  } catch { toast('❌ Error al eliminar registros.', 'error'); }
+}
+
+async function resetearContador() {
+  if (!confirm('⚠️ ¿Resetear el contador a 0?\n\nHaz esto solo al iniciar un evento nuevo.\nLos registros existentes conservan su número.')) return;
+  try {
+    const res = await api({ action: 'reset_counter', password: sessionStorage.getItem(SESSION_KEY) });
+    if (!res.ok) throw new Error();
+    contadorActual = 0;
+    renderStats();
+    toast('🔄 Contador reiniciado a 0.', 'warn');
+  } catch { toast('❌ Error al resetear el contador.', 'error'); }
+}
+
+/* ── Toast ── */
+function toast(msg, tipo = 'info') {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = `toast toast-${tipo}`; t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 420); }, 3500);
+}
+
+/* ── Init ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const pwd = sessionStorage.getItem(SESSION_KEY);
+  if (pwd) mostrarAdmin(null);
+  else document.getElementById('pwd-input').focus();
+});
+
+/* Auto-refresh cada 30s si está logueado */
+setInterval(() => {
+  if (sessionStorage.getItem(SESSION_KEY)) cargarDatos();
+}, 30000);
+</script>
+</body>
+</html>
